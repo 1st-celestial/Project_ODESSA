@@ -1,0 +1,64 @@
+/* src/styles/App.css - minimal base layout (safe, won't touch animations) */
+:root {
+  --accent: #00e5b4;
+  --body-bg: #f7fbfc;
+  --max-width: 1440px;
+  --font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+* { box-sizing: border-box; }
+html,body,#root { height: 100%; margin: 0; }
+body {
+  font-family: var(--font);
+  background: var(--body-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #111;
+}
+
+/* page container utility - use in LandingPage to center content */
+.site-inner {
+  width: 90%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* simple nav baseline so it doesn't overlap content unexpectedly */
+nav {
+   position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 6%;
+      box-sizing: border-box;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur-strength));
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      z-index: 100;
+}
+
+/* small helper to ensure footer sticks near page bottom */
+.app-footer-spacer {
+  height: 48px; /* optional spacer if needed */
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 400ms ease, transform 400ms ease;
+}

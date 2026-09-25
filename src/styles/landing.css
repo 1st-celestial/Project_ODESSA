@@ -1,0 +1,479 @@
+:root {
+      --logo-size: 50px;
+      --stroke: #000;
+      --stroke-width: 0.9;
+      --build-duration: 315;
+      --stagger: 30;
+      --move-duration: 850;
+      --reveal-delay: 30;
+      --move-distance:105px; /* smaller movement for navbar */
+      --word-fade-duration: 700;
+
+      /* navbar theme */
+      --accent: #00e5b4;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --hover-bg: rgba(255, 255, 255, 0.1);
+      --blur-strength: 12px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Outfit", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background:
+      radial-gradient(circle at 20% 30%, rgba(0,229,180,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(0,229,180,0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #f9fbfc 0%, #eef9f7 100%);
+      color: #242525;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    /* === PRELOADER === */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Logo spin animation */
+#logo-loader {
+  width: 100px;
+  height: 100px;
+  animation: spinLogo 1.2s ease-in-out 1;
+}
+
+@keyframes spinLogo {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); } /* two full spins */
+}
+
+    /* ---------- NAVBAR LAYOUT ---------- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 6%;
+      box-sizing: border-box;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur-strength));
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+
+      z-index: 100;
+    }
+
+    /* Left side: logo + text inline */
+    .brand {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    /* ---------- LOGO ANIMATION BLOCK (same core as before) ---------- */
+    .logo-wrap {
+      width: var(--logo-size);
+      height: var(--logo-size);
+      display: inline-grid;
+      place-items: center;
+      position: relative;
+      cursor: pointer;
+      will-change: transform;
+      transform-origin: center left;
+      transition: transform calc(var(--move-duration) * 1ms) cubic-bezier(.2, .9, .2, 1);
+    }
+    .logo-wrap.moved {
+      transform: translateX(var(--move-distance));
+    }
+
+    .logo-inner {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      transform-origin: center;
+      transition: transform 260ms ease, filter 260ms ease;
+    }
+    .logo-inner svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .logo-wrap:hover .logo-inner {
+      transform: scale(1.08);
+      filter: drop-shadow(0 6px 12px rgba(0, 229, 179, 0.441));
+    }
+
+
+    /* Brand text */
+    .words {
+      margin-left: -5rem;
+      font-size: 1.9rem;
+      font-weight: 900;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity calc(var(--word-fade-duration) * 1ms) cubic-bezier(.2,.9,.2,1),
+        transform calc(var(--word-fade-duration) * 1ms) cubic-bezier(.2,.9,.2,1);
+        cursor: pointer;
+    }
+    .words.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- NAV LINKS ---------- */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-links a {
+      color: #242525;
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a:focus {
+      background: var(--hover-bg);
+      color:  #2a51ffda;
+    }
+    .nav-links a.active {
+      color:  #2a51ffda;
+      background:  #2a51ff3b;
+    }
+
+    /* login button highlight */
+    .login-btn {
+      border: 1px solid  #2a51ffda;
+      padding: 8px 18px;
+      border-radius: 10px;
+      color: #fff;
+      transition: all 0.3s ease;
+      background: #2a51ffda;
+    }
+    .login-btn:hover,.login-btn:focus {
+      background: #2a51ff3b;
+      color:  #2a51ffda;
+      box-shadow: 0 0 10px  #2a51ffa4;
+    }
+
+    .vv{
+      color: white !important;
+    }
+    .vv:hover,.vv:focus{
+      color:  #2a51ffda !important;
+    }
+
+    /* responsive tweak */
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+    }
+
+    main {
+      padding-top: 90px;
+      text-align: center;
+      color: #242525;
+    }
+      .mobile-menu {
+      position: fixed; 
+      top: 98px; /* Height of your navbar */
+      left: 0;
+      width: 100%;
+      background: radial-gradient(circle at 20% 30%, rgba(0,229,180,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(0,229,180,0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #f9fbfc 0%, #eef9f7 100%);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: all 0.4s ease;
+      text-align: center;
+      z-index: 99; 
+      padding: 1rem 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .mobile-menu.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .mobile-menu a {
+      display: block;
+      padding: 1rem 2rem;
+      color: #242525;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(42, 81, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    .mobile-menu a:last-child {
+      border-bottom: none;
+    }
+    .mobile-menu a:hover, 
+    .mobile-menu a:focus {
+      background: rgba(42, 81, 255, 0.1);
+      color: #2a51ffda;
+    }
+
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .margin{margin-left: auto;
+    }
+      .hamburger{display: block !important;}
+    }
+    .hamburger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  position: relative;
+}
+  .bcg {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8rem 7%;
+  min-height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 30%, rgba(0,229,180,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(0,229,180,0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #f9fbfc 0%, #eef9f7 100%);
+}
+
+/* === WAVE BACKGROUND === */
+.wave-bg {
+  position: absolute;
+  bottom: 25;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+}
+.wave-bg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ====== Base wave setup ====== */
+.wave {
+  transform: translateY(20px);
+  transition: transform 1s ease;
+  transform-origin: center;
+}
+
+/* ====== On load animation ====== */
+.wave.loaded {
+  transform: translateY(0);
+  animation: gentleFlow 3.7s ease-in-out infinite;
+}
+
+@keyframes gentleFlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+/* === TEXT AREA === */
+.writeup {
+  z-index: 5;
+  margin-left: -30px;
+  overflow: auto;
+}
+.head {
+  font-size: 3.3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #0a0f14;
+  opacity: 0;
+  transform: translateX(-50px);
+}
+.subhead {
+  margin-top: 1.1rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.buttons {
+  margin-top: 2rem;
+}
+
+/* === BUTTONS === */
+.login-btz{
+  border: 2px solid  #2a51ffda;
+  color:  #fbfcffe7;
+  background:  #2a51ffda;;
+  padding: 0.8rem 2rem;
+  margin-right: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;}
+
+
+.signup {
+  border: 2px solid  #2a51ffda;
+  color:  #2a51ffda;
+  background: transparent;
+  padding: 0.8rem 2rem;
+  margin-right: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.signup:hover,.signup:focus {
+  background:  #2a51ffda;
+  color: #fff;
+  transform: translateY(-3px);
+}
+.login-btz:hover, .login-btn:focus{
+  background: transparent;
+  color: #2a51ffda;
+  transform: translateY(-3px);
+}
+
+/* === ILLUSTRATION SIDE === */
+.illustrations {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+.blob {
+  position: absolute;
+  right: -190px;
+ bottom: 260px;
+  width: 280px;
+  opacity: 0.8;
+  z-index: 1;
+  display: none;
+}
+.ticket {
+  position: relative;
+  width: 300px;
+  margin-bottom: -85px;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.ticket:hover,
+.ticket:focus {
+  transform: translateY(-8px);
+  filter: drop-shadow(0 12px 19px rgba(0, 102, 204, 0.683));
+}
+#ticket-body {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .bcg {
+    flex-direction: column;
+    text-align: center;
+    padding: 6rem 2rem;
+  }
+  .wave-bg svg{
+    height: 800px;
+  }
+
+  .writeup {
+    margin-top: 5px;
+    max-width: 100%;
+  }
+  .illustrations {
+    margin-top: 2.5rem;
+  }
+  .blob {
+    display: none;
+  }
+  .ticket{
+    width: 200px;
+    margin-bottom: -100px;
+    margin-right: 13px;
+  }
+}
+
+/* === Animation keyframes === */
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-12px);
+  }
+  60% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
